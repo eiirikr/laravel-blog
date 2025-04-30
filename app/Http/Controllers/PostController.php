@@ -52,6 +52,39 @@ class PostController extends Controller
         return view('posts.index')->with('posts',$posts);
     }
 
+    // Action that returns a view displaying all blog posts
+    public function welcome(){
+        $posts = Post::inRandomOrder()
+        ->limit(3)
+        ->get();
+
+        return view('welcome')->with('posts', $posts);
+    }
+
+
+    //Stretch Goals (S2)
+    //2. Create a new action in the PostController named myPosts. This action will pass only the posts authored by the authenticated user to the index view.
+
+    // Action for showing only the posts authored by the authenticated user
+    public function myPosts() {
+        if(Auth::user()){
+            $posts = Auth::user()->posts;
+            return view('posts.index')->with('posts', $posts);  
+        }else{
+            return redirect('/login');
+        }
+    }
+
+    //4. Create an action that returns a view showing a specific post by using the URL parameter $id to query the database for the entry to be displayed.
+
+    // Action that returns a view showing a specific post by using the URL parameter $id to query the database for the entry to be displayed
+       public function show($id)
+       {
+           $post = Post::find($id);
+           return view('posts.show')->with('post', $post);
+       }
+
+
 }
 
 

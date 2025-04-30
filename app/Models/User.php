@@ -46,6 +46,7 @@ class User extends Authenticatable
         ];
     }
 
+
     //DEFINE A ONE TO MANY RELATIONSHIP between the User Model and the Post Model
 
     public function posts()
