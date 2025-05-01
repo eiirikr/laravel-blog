@@ -21,7 +21,7 @@
 							<form method="POST" action="/posts/{{$post->id}}">
 								@method('DELETE')
 								@csrf
-								<a href="/post/{{$post->id}}/edit" class="btn btn-primary">Edit Post</a>
+								<a href="/posts/{{$post->id}}/edit" class="btn btn-primary">Edit Post</a>
 								<button type="submit" class="btn btn-danger">Delete Post</button>
 							</form>
 						</div>

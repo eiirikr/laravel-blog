@@ -1,6 +1,7 @@
 
 {{-- Remove the current code from `welcome.blade.php`. --}}
 
+{{-- Activity S2 --}}
 @extends('layouts.app')
 
 @section('content')

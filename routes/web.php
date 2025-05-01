@@ -24,6 +24,7 @@ Route::post('/posts',[PostController::class,'store']);
 Route::get('/posts',[PostController::class,'index']);
 
 
+// Activity S2
 // Define a route that returns a view for the welcome page.
 Route::get('/', [PostController::class, 'welcome']);
 
@@ -44,3 +45,14 @@ Route::get('/posts/{id}', [PostController::class, 'show']);
     Route Parameters or Wildcards {}: Route parameters are enclosed in curly braces {} and should consist of alphabetic characters. They are injected into route callbacks or controllers based on their order.
 */
 
+
+// Define a route that returns an edit form for a specific post when a GET request is received at the /posts/{id}/edit endpoint.
+Route::get('/posts/{id}/edit', [PostController::class, 'edit']);
+
+//Define a route that will update an existing post with a matching URL parameter ID using the PUT Method
+
+Route::put('/posts/{id}', [PostController::class, 'update']);
+
+//Define a route that will delete a post with the matching URL parameter ID
+
+Route::delete('/posts/{id}', [PostController::class, 'destroy']);

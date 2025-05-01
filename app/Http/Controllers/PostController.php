@@ -52,6 +52,8 @@ class PostController extends Controller
         return view('posts.index')->with('posts',$posts);
     }
 
+
+    // Activity S2
     // Action that returns a view displaying all blog posts
     public function welcome(){
         $posts = Post::inRandomOrder()
@@ -83,6 +85,58 @@ class PostController extends Controller
            $post = Post::find($id);
            return view('posts.show')->with('post', $post);
        }
+
+
+     // Action that returns an edit form for a specific post when a GET request is received at the /posts/{id}/edit endpoint.
+    public function edit($id){
+        //$post = Post::find($id);
+
+        //Stretch Goal
+        $post = Post::findOrFail($id); //this will return 404 if no records are found
+        //return view('posts.edit')->with('post', $post);
+
+        if(Auth::user()){
+            if(Auth::user()->id == $post->user_id){
+                return view('posts.edit')->with('post', $post);
+            }
+            return redirect('/posts');
+        }
+        else{
+            return redirect('/login');
+        }
+    }
+
+    //Action for updating an existing post with a matching URL parameter ID
+
+    public function update(Request $request, $id){
+
+        //find the post by its ID
+        $post = Post::find($id);
+
+        //check if the authenticated user's ID matches the post's user_id
+        if(Auth::user()->id == $post->user_id){
+            $post->title = $request->input('title');
+            $post->content = $request->input('content');
+
+            //save the updated post to the database
+            $post->save();
+        }
+
+        return redirect('/posts');
+    }
+
+    //Action for deleting a post with the matching url parameter ID
+    public function destroy($id){
+
+        //check if the post exists
+        $post = Post::find($id);
+        //check if the authenticated user's ID matches the post's user_id
+        if(Auth::user()->id == $post->user_id){
+           //delete the post from the database
+           $post->delete();
+        }
+        return redirect('/posts');
+    }
 
 
 }
