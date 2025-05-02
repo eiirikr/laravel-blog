@@ -11,6 +11,10 @@ use Illuminate\Support\Facades\Auth;
 //Import the Post Model
 use App\Models\Post;
 
+
+//Import the Post Like Model
+use App\Models\PostLike;
+
 class PostController extends Controller
 {
     //Action to return a view containing a form for creating a blogpost
@@ -48,7 +52,8 @@ class PostController extends Controller
     //Action that returns a view (index.blade.php) displaying all() blog posts
     public function index()
     {
-        $posts = Post::all();
+        //$posts = Post::all();
+        $posts = Post::where('isActive', true)->get();
         return view('posts.index')->with('posts',$posts);
     }
 
@@ -57,6 +62,7 @@ class PostController extends Controller
     // Action that returns a view displaying all blog posts
     public function welcome(){
         $posts = Post::inRandomOrder()
+        ->where('isActive', true)
         ->limit(3)
         ->get();
 
@@ -136,6 +142,56 @@ class PostController extends Controller
            $post->delete();
         }
         return redirect('/posts');
+    }
+
+     // Action to archive a post by setting its 'isActive' property to false
+    public function archive($id)
+    {
+        // Find the post by its ID
+        $post = Post::find($id);
+
+        // Check if the authenticated user's ID matches the post's user_id
+        if(Auth::user()->id == $post->user_id){
+            // Set the 'isActive' property to false to archive the post
+            $post->isActive = false;
+            // Save the updated post to the database
+            $post->save();
+        }
+        // Redirect to the posts page after archiving
+        return redirect('/posts');
+    }
+
+    //Action for liking and unliking of a post by an authenticated user
+
+    public function like($id){
+
+        //find post by its ID
+        $post = Post::find($id);
+        //get the id of the currently authenticated user
+        $user_id = Auth::user()->id;
+
+        //check if the authenticated user is not the post author
+        if($post->likes->contains("user_id",$user_id)){
+            //Unlike the post by deleting the existing like record
+            PostLike::where('post_id',$post->id)->where('user_id',$user_id)->delete();
+
+        }else{
+
+            //like the post by creating a new like record
+            //instantiate a new PostLike object from the PostLike model
+            $postLike = new PostLike;
+
+            //set the properties of the new PostLike object
+            $postLike->post_id = $post->id;
+            $postLike->user_id = $user_id;
+
+            //save the new like record in the database
+            $postLike->save();
+
+        }
+
+        //redirect back to the post page
+        return redirect("/posts/$id");
     }
 
 

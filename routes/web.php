@@ -55,4 +55,10 @@ Route::put('/posts/{id}', [PostController::class, 'update']);
 
 //Define a route that will delete a post with the matching URL parameter ID
 
-Route::delete('/posts/{id}', [PostController::class, 'destroy']);
+// Route::delete('/posts/{id}', [PostController::class, 'destroy']);
+
+// Define a route that will archive a post with the matching URL parameter ID
+Route::delete('/posts/{id}', [PostController::class, 'archive']);
+
+//Define a route for liking a post. It handles PUT request to /post/{id}/like and invokes the 'like' method in the PostController
+Route::put('/post/{id}/like',[PostController::class,'like']);

@@ -16,6 +16,12 @@ class Post extends Model
         return $this->belongsTo('App\Models\User');
     }
 
+    //A Post can have many PostLikes
+    public function likes()
+    {
+        return $this->hasMany('App\Models\PostLike');
+    }
+
 
 
 }
