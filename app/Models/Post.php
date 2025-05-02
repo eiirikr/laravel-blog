@@ -22,6 +22,12 @@ class Post extends Model
         return $this->hasMany('App\Models\PostLike');
     }
 
+    // Defines the relationship between a 'Post' and 'PostComment'
+    // It indicates that a 'Post' can have many 'PostComment'
+    public function comments() {
+        return $this->hasMany('App\Models\PostComment');
+    }
+
 
 
 }

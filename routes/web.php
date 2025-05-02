@@ -62,3 +62,6 @@ Route::delete('/posts/{id}', [PostController::class, 'archive']);
 
 //Define a route for liking a post. It handles PUT request to /post/{id}/like and invokes the 'like' method in the PostController
 Route::put('/post/{id}/like',[PostController::class,'like']);
+
+// Define a route for commenting on a post. This route will handle POST requests sent to the /posts/{id}/comment endpoint and call the 'comment' method in the PostController to perform the comment action.
+Route::post('posts/{id}/comment', [PostController::class, 'comment']);

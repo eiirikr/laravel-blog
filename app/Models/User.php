@@ -60,4 +60,10 @@ class User extends Authenticatable
         return $this->hasMany('App\Models\PostLike');
     }
 
+    // Defines the relationship between a 'User' and 'PostComment'
+    // It indicates that a 'User' can have many 'PostComment'
+    public function comments() {
+        return $this->hasMany('App\Models\PostComment');
+    }
+
 }

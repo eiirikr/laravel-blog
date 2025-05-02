@@ -15,6 +15,9 @@ use App\Models\Post;
 //Import the Post Like Model
 use App\Models\PostLike;
 
+use App\Models\PostComment;
+
+
 class PostController extends Controller
 {
     //Action to return a view containing a form for creating a blogpost
@@ -192,6 +195,38 @@ class PostController extends Controller
 
         //redirect back to the post page
         return redirect("/posts/$id");
+    }
+
+
+    // Action for commenting on a post by an authenticated user
+    public function comment(Request $request, $id)
+    {
+        // Get the ID of the currently authenticated user
+        $post = Post::find($id);
+        $user_id = Auth::user()->id;
+
+        // Check if the user is authenticated
+        if(Auth::user()){
+
+        // Create a new comment instance
+        $postComment = new PostComment;
+
+        // Set the user ID and post ID for the comment
+        $postComment->user_id = $user_id;
+        $postComment->post_id = $post->id;
+
+        // Set the content of the comment
+        $postComment->content = $request->input('content');
+
+        // Save the comment to the database
+        $postComment->save();
+
+        // Redirect to the post page with a success message
+        return redirect("/posts/$id")->with('comment', 'Leave a comment successfully');
+        }else {
+            // Redirect to the login page if the user is not authenticated
+            return redirect('login');
+        }
     }
 
 
